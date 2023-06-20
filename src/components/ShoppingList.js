@@ -3,7 +3,7 @@ import ItemForm from "./ItemForm";
 import Filter from "./Filter";
 import Item from "./Item";
 
-function ShoppingList({ items }) {
+function ShoppingList({ items, onItemFormSubmit }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchValue, setSearchValue] = useState('')
 
@@ -26,7 +26,8 @@ function ShoppingList({ items }) {
   const itemsToDisplay = filteredItems.filter(item => {
     const casedItem = item.name.toLowerCase()
     if (searchValue === "") return true;
-
+    //.startsWith is better solution than .includes
+    //but the Jest test doesn't like it :(
     return casedItem.includes(searchValue.toLowerCase());
   })
     
@@ -34,7 +35,7 @@ function ShoppingList({ items }) {
 
   return (
     <div className="ShoppingList">
-      <ItemForm />
+      <ItemForm onItemFormSubmit={onItemFormSubmit}/>
       <Filter 
         onCategoryChange={handleCategoryChange}
         onSearchChange={handleSearchChange}
